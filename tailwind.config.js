@@ -6,7 +6,8 @@ module.exports = {
       colors: {
         leanix: {
           blue: '#1666ee',
-          'dark-blue': '#1259d4'
+          'dark-blue': '#1259d4',
+          'darkest-blue': '#104cb2'
         }
       }
     }

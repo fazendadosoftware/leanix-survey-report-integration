@@ -1,11 +1,10 @@
 import { computed, reactive, watch } from 'vue'
 import '@leanix/reporting' /* global lx */
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 const state = reactive({
   baseUrl: null,
   origin: null,
-  polls: null,
-  selectedPoll: null,
   outgoingRequests: 0,
   reportInitialized: false
 })
@@ -51,13 +50,26 @@ const initializeReport = async () => {
 }
 
 const fetchPolls = async () => {
-  if (state.origin === null) throw Error('Report still not initialized')
   const url = `${state.origin}/services/poll/v2/polls`
   try {
     state.outgoingRequests++
-    state.polls = await lx.executeParentOriginXHR('GET', url)
+    const polls = await lx.executeParentOriginXHR('GET', url)
       .then(({ body }) => JSON.parse(body))
       .then(({ data }) => data)
+    return polls
+  } finally {
+    state.outgoingRequests--
+  }
+}
+
+const fetchPoll = async pollId => {
+  const url = `${state.origin}/services/poll/v2/polls/${pollId}`
+  try {
+    state.outgoingRequests++
+    const poll = await lx.executeParentOriginXHR('GET', url)
+      .then(({ body }) => JSON.parse(body))
+      .then(({ data }) => data)
+    return poll
   } finally {
     state.outgoingRequests--
   }
@@ -65,9 +77,26 @@ const fetchPolls = async () => {
 
 const fetchPollRuns = async pollId => {
   const url = `${state.origin}/services/poll/v2/polls/${pollId}/pollRuns`
-  const pollRuns = await lx.executeParentOriginXHR('GET', url)
-    .then(({ body }) => JSON.parse(body).data)
-  return pollRuns
+  try {
+    state.outgoingRequests++
+    const pollRuns = await lx.executeParentOriginXHR('GET', url)
+      .then(({ body }) => JSON.parse(body).data)
+    return pollRuns
+  } finally {
+    state.outgoingRequests--
+  }
+}
+
+const fetchPollRun = async pollRunId => {
+  const url = `${state.origin}/services/poll/v2/pollRuns/${pollRunId}`
+  try {
+    state.outgoingRequests++
+    const pollRun = await lx.executeParentOriginXHR('GET', url)
+      .then(({ body }) => JSON.parse(body).data)
+    return pollRun
+  } finally {
+    state.outgoingRequests--
+  }
 }
 
 const fetchPollRunResults = async pollRunId => {
@@ -77,11 +106,15 @@ const fetchPollRunResults = async pollRunId => {
   return pollRunResults
 }
 
-const openSidePane = () => {
+const showFactSheet = ({ type, id }) => {
+  const url = `${state.baseUrl}/factsheet/${type}/${id}`
+  lx.openLink(url)
+}
+const openFactSheetOnSidePane = ({ id, type }) => {
   const sidePaneElements = {
     factsheet: {
       type: 'FactSheet',
-      factSheetId: '28fe4aa2-6e46-41a1-a131-72afb3acf256',
+      factSheetId: id,
       detailFields: ['displayName'],
       relations: [],
       pointOfView: {
@@ -96,13 +129,21 @@ const openSidePane = () => {
   lx.openSidePane(sidePaneElements)
 }
 
-export default () => ({
-  initializeReport,
-  reportInitialized: computed(() => state.reportInitialized),
-  fetchPolls,
-  fetchPollRuns,
-  fetchPollRunResults,
-  polls,
-  selectedPoll,
-  openSidePane
-})
+const formatDateAsDistanceToNow = dateString => formatDistanceToNow(new Date(dateString).getTime(), { addSuffix: true })
+
+export default function useReport () {
+  return {
+    initializeReport,
+    reportInitialized: computed(() => state.reportInitialized),
+    fetchPolls,
+    fetchPoll,
+    fetchPollRuns,
+    fetchPollRun,
+    fetchPollRunResults,
+    polls,
+    selectedPoll,
+    showFactSheet,
+    formatDateAsDistanceToNow,
+    openFactSheetOnSidePane
+  }
+}

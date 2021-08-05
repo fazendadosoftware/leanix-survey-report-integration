@@ -14,6 +14,7 @@
     "@leanix/reporting": "^0.4.54",
     "@tailwindcss/forms": "^0.3.3",
     "core-js": "^3.6.5",
+    "date-fns": "^2.23.0",
     "fuse.js": "^6.4.6",
     "throttle-debounce": "^3.0.1",
     "v-wave": "^1.3.1",

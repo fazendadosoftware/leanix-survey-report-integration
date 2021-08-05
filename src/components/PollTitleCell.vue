@@ -7,9 +7,8 @@
 </template>
 
 <script setup>
-import useReport from '@/composables/report'
 import FuseHighlight from '@/components/FuseHighlight'
-import { defineProps, toRefs, unref } from 'vue'
+import { defineProps, toRefs, unref, getCurrentInstance } from 'vue'
 
 const props = defineProps({
   hit: { type: [String, Object], required: true },
@@ -18,10 +17,11 @@ const props = defineProps({
 })
 
 const { hit, attribute, highlightClasses } = toRefs(props)
-const { selectedPoll } = useReport()
+
+const { parent: { parent: { emit } } } = getCurrentInstance()
 
 const onClick = () => {
-  const { item } = unref(hit)
-  selectedPoll.value = JSON.parse(JSON.stringify(item))
+  const { item: { id } } = unref(hit)
+  emit('select-poll', id)
 }
 </script>

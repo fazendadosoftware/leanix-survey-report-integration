@@ -1,29 +1,11 @@
 <template>
-  <div class="container mx-auto">
-    <component :is="view" />
-  </div>
+  <router-view />
 </template>
 
 <script setup>
-import useReport from '@/composables/report'
-import Polls from '@/components/Polls'
-import Poll from '@/components/Poll'
-import { ref, markRaw, watch } from 'vue'
+import useReport from '@/composables/useReport'
 
-const view = ref(null)
+const { initializeReport } = useReport()
 
-const changeView = newView => {
-  const lookup = { Polls, Poll }
-  view.value = markRaw(lookup[newView])
-}
-
-const { initializeReport, selectedPoll } = useReport()
-
-watch(selectedPoll, (poll = null) => changeView(poll === null ? 'Polls' : 'Poll'), { immediate: true })
-
-const init = async () => {
-  await initializeReport()
-}
-
-init()
+initializeReport()
 </script>

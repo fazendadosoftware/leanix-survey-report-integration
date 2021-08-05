@@ -2,7 +2,7 @@ import { ref, computed, unref } from 'vue'
 import Fuse from 'fuse.js'
 import { debounce } from 'throttle-debounce'
 
-export default function useFuse (list = [], options = {}) {
+export default function useFuse (list = ref([]), options = {}) {
   const _query = ref('')
 
   const { limit = 100, matchAllOnEmptyQuery = true, debounceSearchInput = 100, ...fuseOptions } = options

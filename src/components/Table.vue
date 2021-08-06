@@ -1,5 +1,5 @@
 <template>
-  <table class="min-w-full divide-y divide-gray-200 border-r border-l border-b">
+  <table class="border border-t-0 min-w-full divide-y divide-gray-200">
     <thead class="bg-leanix-blue text-white sticky top-0">
       <slot name="table-header" :columns="columns" />
       <tr>
@@ -75,4 +75,5 @@ const callColumnClickHandler = (row, column) => typeof column?.clickHandler === 
 .table-cell-padding {
   @apply px-3 py-3;
 }
+
 </style>

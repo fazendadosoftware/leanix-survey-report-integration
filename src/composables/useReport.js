@@ -47,6 +47,22 @@ const initializeReport = async () => {
   }
   await lx.ready(reportConfig)
   state.reportInitialized = true
+  loadAxiformaFonts(state.baseUrl)
+}
+
+const loadAxiformaFonts = async baseUrl => {
+  const fonts = [
+    { fontName: 'Axiforma-Regular', fileName: '39568C_F_0.228641b0955040e351ea.woff2' },
+    { fontName: 'Axiforma-Bold', fileName: '39568C_0_0.adaeb02b1e875fd68248.woff2' }
+  ]
+  try {
+    const fontFaces = await Promise
+      .all(fonts.map(({ fontName, fileName }) => new FontFace(fontName, `url(${baseUrl}/${fileName})`).load()))
+    fontFaces.forEach(face => document.fonts.add(face))
+  } catch (error) {
+    lx.showToastr('warning', 'Could not load Axiforma font')
+    console.warn(error)
+  }
 }
 
 const fetchPolls = async () => {
@@ -110,6 +126,7 @@ const showFactSheet = ({ type, id }) => {
   const url = `${state.baseUrl}/factsheet/${type}/${id}`
   lx.openLink(url)
 }
+
 const openFactSheetOnSidePane = ({ id, type }) => {
   const sidePaneElements = {
     factsheet: {

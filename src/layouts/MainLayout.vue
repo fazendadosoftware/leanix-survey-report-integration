@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto flex flex-col space-y-4">
-    <breadcrumbs />
+    <breadcrumbs v-if="false"/>
     <router-view/>
   </div>
 </template>

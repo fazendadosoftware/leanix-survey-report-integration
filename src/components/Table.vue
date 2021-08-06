@@ -7,7 +7,7 @@
           v-for="column in columns"
           :key="column[keyAttr]"
           scope="col"
-          class="table-cell-padding text-left text-xs font-medium uppercase tracking-wider">
+          class="table-cell-padding text-left text-tiny font-axiforma-bold uppercase tracking-wider">
           {{column.label}}
         </th>
       </tr>

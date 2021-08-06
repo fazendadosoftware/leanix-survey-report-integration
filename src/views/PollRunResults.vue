@@ -22,9 +22,9 @@
             @click="router.go(-1)"
             type="button"
             class="inline-flex items-center focus:outline-none focus:ring-0">
-            <ArrowLeftIcon class="w-5" aria-hidden="true" />
+            <ArrowLeftIcon class="w-4" aria-hidden="true" />
           </button>
-          <span v-if="loadingPollRun" class="text-xl rounded animate-pulse px-2">
+          <span v-if="loadingPollRun" class="text-white text-xl font-axiforma-bold tracking-wider rounded animate-pulse px-2">
             Loading Poll Run Results #{{pollRunId.split('-').slice(-1)[0]}}
           </span>
           <transition
@@ -35,7 +35,7 @@
             leave-from-class="opacity-100"
             leave-active-class="transition-opacity duration-500"
             leave-to-class="opacity-0">
-            <span v-if="!loadingPoll" class="text-xl font-semibold">{{poll?.title}}</span>
+            <span v-if="!loadingPoll" class="text-white text-xl font-axiforma-bold tracking-wider">{{poll?.title}}</span>
           </transition>
         </div>
       </th>

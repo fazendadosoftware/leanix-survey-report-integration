@@ -11,7 +11,7 @@
             @click="router.go(-1)"
             type="button"
             class="inline-flex items-center focus:outline-none focus:ring-0">
-            <ArrowLeftIcon class="w-5" aria-hidden="true" />
+            <ArrowLeftIcon class="w-4" aria-hidden="true" />
           </button>
           <span v-if="loadingPoll" class="w-1/4 text-transparent text-xl bg-leanix-dark-blue rounded animate-pulse">
             .
@@ -24,7 +24,7 @@
             leave-from-class="opacity-100"
             leave-active-class="transition-opacity duration-500"
             leave-to-class="opacity-0">
-            <span v-if="!loadingPoll" class="text-xl font-semibold">{{poll?.title}}</span>
+            <span v-if="!loadingPoll" class="text-white text-xl font-axiforma-bold tracking-wider">{{poll?.title}}</span>
           </transition>
         </div>
       </th>
@@ -37,7 +37,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useReport from '@/composables/useReport'
 import VTable from '@/components/Table'
-import { ArrowLeftIcon } from '@heroicons/vue/outline'
+import { ArrowLeftIcon } from '@heroicons/vue/solid'
 
 const router = useRouter()
 const route = useRoute()

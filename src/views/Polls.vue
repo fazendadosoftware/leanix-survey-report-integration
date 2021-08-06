@@ -8,7 +8,7 @@
       <tr class="text-gray-800">
         <th class="pt-3 px-3 text-left text-sm" :colspan="columns.length">
           <div class="flex space-x-2">
-            <span class="text-white text-xl font-semibold">Polls</span>
+            <span class="text-white text-xl font-axiforma-bold tracking-wider">Polls</span>
             <div class="flex-1"/>
             <input
                 v-model="query"

@@ -19,8 +19,8 @@
         <tr
           v-for="(row, idx) in rows"
           :key="idx"
-          class="hover:bg-gray-300 transition-colors"
-          :class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-200'">
+          class="hover:bg-gray-200 transition-colors"
+          :class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'">
           <td
             v-for="column in columns"
             :key="column[keyAttr]"

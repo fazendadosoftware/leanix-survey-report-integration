@@ -4,7 +4,7 @@
     :columns="columns"
     @select-poll-run="selectHandler">
     <template v-slot:table-header="{ columns }">
-      <th class="py-2 px-3 text-left text-sm" :colspan="columns.length">
+      <th class="pt-3 px-3 text-left text-sm" :colspan="columns.length">
         <div class="flex space-x-2">
           <button
             v-wave

@@ -59,7 +59,7 @@ const columns = [
     key: 'id',
     label: 'ID',
     mapFn: (row, key) => defaultMapFn(row, key).split('-').slice(-1)[0],
-    clickHandler: ({ item }, columnKey) => { router.push({ name: 'pollRuns', params: { id: item[columnKey], poll: JSON.stringify(item) } }) }
+    clickHandler: ({ item }, columnKey) => { router.push({ name: 'pollRuns', params: { pollId: item[columnKey], poll: JSON.stringify(item) } }) }
   },
   {
     key: 'title',
@@ -74,7 +74,8 @@ const columns = [
   { key: 'status', label: 'Status', mapFn: defaultMapFn }
 ]
 
-const selectPollHandler = id => router.push({ name: 'pollRuns', params: { id } })
+// Fixme: to be eliminated
+const selectPollHandler = pollId => router.push({ name: 'pollRuns', params: { pollId } })
 
 const refreshPolls = async () => {
   try {

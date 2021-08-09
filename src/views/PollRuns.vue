@@ -43,7 +43,7 @@ const router = useRouter()
 const route = useRoute()
 const { fetchPoll, fetchPollRuns, formatDateAsDistanceToNow } = useReport()
 
-const { params: { id, poll: routePoll = null } } = route
+const { params: { pollId, poll: routePoll = null } } = route
 
 const poll = ref(JSON.parse(routePoll))
 const pollRuns = ref(null)
@@ -54,7 +54,7 @@ const columns = [
   {
     key: 'id',
     label: 'Poll Run ID',
-    clickHandler: (row, column) => { router.push({ name: 'pollRunResults', params: { id: row[column], poll: JSON.stringify(unref(poll)) } }) },
+    clickHandler: (row, column) => { router.push({ name: 'pollRunResults', params: { pollRunId: row[column], poll: JSON.stringify(unref(poll)) } }) },
     mapFn: (row, columnKey) => `${row[columnKey].split('-').slice(-1)[0]}`
   },
   { key: 'status', label: 'Status' },
@@ -68,10 +68,10 @@ const columns = [
 const init = () => {
   if (unref(poll) === null) {
     loadingPoll.value = true
-    fetchPoll(id).then(_poll => { poll.value = _poll }).finally(() => { loadingPoll.value = false })
+    fetchPoll(pollId).then(_poll => { poll.value = _poll }).finally(() => { loadingPoll.value = false })
   }
   loadingPollRuns.value = true
-  fetchPollRuns(id).then(_pollRuns => { pollRuns.value = _pollRuns }).finally(() => { loadingPollRuns.value = false })
+  fetchPollRuns(pollId).then(_pollRuns => { pollRuns.value = _pollRuns }).finally(() => { loadingPollRuns.value = false })
 }
 
 init()

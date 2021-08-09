@@ -58,7 +58,7 @@ const loadingPollRun = ref(false)
 const loadingResults = ref(false)
 const pollRun = ref(null)
 const pollRunResults = ref(null)
-let { params: { id: pollRunId, poll: routePoll } } = route
+let { params: { pollRunId, poll: routePoll } } = route
 
 routePoll = JSON.parse(routePoll)
 

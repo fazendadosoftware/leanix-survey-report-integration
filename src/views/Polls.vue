@@ -59,7 +59,7 @@ const columns = [
     key: 'id',
     label: 'ID',
     mapFn: (row, key) => defaultMapFn(row, key).split('-').slice(-1)[0],
-    clickHandler: ({ item }, columnKey) => { router.push({ name: 'pollRuns', params: { id: item[columnKey] } }) }
+    clickHandler: ({ item }, columnKey) => { router.push({ name: 'pollRuns', params: { id: item[columnKey], poll: JSON.stringify(item) } }) }
   },
   {
     key: 'title',

@@ -24,7 +24,7 @@
             class="inline-flex items-center focus:outline-none focus:ring-0">
             <ArrowLeftIcon class="w-4" aria-hidden="true" />
           </button>
-          <span v-if="loadingPollRun" class="text-white text-xl font-axiforma-bold tracking-wider rounded animate-pulse px-2">
+          <span v-if="!poll" class="text-white text-xl font-axiforma-bold tracking-wider rounded animate-pulse px-2">
             Loading Poll Run Results #{{pollRunId.split('-').slice(-1)[0]}}
           </span>
           <transition
@@ -35,7 +35,7 @@
             leave-from-class="opacity-100"
             leave-active-class="transition-opacity duration-500"
             leave-to-class="opacity-0">
-            <span v-if="!loadingPoll" class="text-white text-xl font-axiforma-bold tracking-wider">{{poll?.title}}</span>
+            <span v-if="poll" class="text-white text-xl font-axiforma-bold tracking-wider">{{poll?.title}}</span>
           </transition>
         </div>
       </th>
@@ -48,7 +48,7 @@ import { ref, unref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useReport from '@/composables/useReport'
 import VTable from '@/components/Table'
-import { ArrowLeftIcon } from '@heroicons/vue/outline'
+import { ArrowLeftIcon } from '@heroicons/vue/solid'
 
 const route = useRoute()
 const router = useRouter()
@@ -58,12 +58,14 @@ const loadingPollRun = ref(false)
 const loadingResults = ref(false)
 const pollRun = ref(null)
 const pollRunResults = ref(null)
-const { params: { id: pollRunId } } = route
+let { params: { id: pollRunId, poll: routePoll } } = route
+
+routePoll = JSON.parse(routePoll)
 
 // const pollQuestionnaire = computed(() => unref(pollRun) !== null ? unref(pollRun).poll.questionnaire : null)
 const poll = computed(() => {
-  if (unref(pollRun) === null) return null
-  const { id, title, creationDate, status, factSheetQuery } = unref(pollRun)?.poll || {}
+  if (routePoll === null && unref(pollRun) === null) return null
+  const { id, title, creationDate, status, factSheetQuery } = unref(pollRun)?.poll || routePoll || {}
   return { id, title, creationDate, status, factSheetQuery }
 })
 

@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, unref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useReport from '@/composables/useReport'
 import VTable from '@/components/Table'
@@ -43,9 +43,9 @@ const router = useRouter()
 const route = useRoute()
 const { fetchPoll, fetchPollRuns, formatDateAsDistanceToNow } = useReport()
 
-const { params: { id } } = route
+const { params: { id, poll: routePoll = null } } = route
 
-const poll = ref(null)
+const poll = ref(JSON.parse(routePoll))
 const pollRuns = ref(null)
 const loadingPoll = ref(false)
 const loadingPollRuns = ref(false)
@@ -54,7 +54,7 @@ const columns = [
   {
     key: 'id',
     label: 'Poll Run ID',
-    clickHandler: (row, column) => { router.push({ name: 'pollRunResults', params: { id: row[column] } }) },
+    clickHandler: (row, column) => { router.push({ name: 'pollRunResults', params: { id: row[column], poll: JSON.stringify(unref(poll)) } }) },
     mapFn: (row, columnKey) => `${row[columnKey].split('-').slice(-1)[0]}`
   },
   { key: 'status', label: 'Status' },
@@ -66,9 +66,11 @@ const columns = [
 ]
 
 const init = () => {
-  loadingPoll.value = true
+  if (unref(poll) === null) {
+    loadingPoll.value = true
+    fetchPoll(id).then(_poll => { poll.value = _poll }).finally(() => { loadingPoll.value = false })
+  }
   loadingPollRuns.value = true
-  fetchPoll(id).then(_poll => { poll.value = _poll }).finally(() => { loadingPoll.value = false })
   fetchPollRuns(id).then(_pollRuns => { pollRuns.value = _pollRuns }).finally(() => { loadingPollRuns.value = false })
 }
 

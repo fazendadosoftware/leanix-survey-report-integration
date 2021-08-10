@@ -24,7 +24,7 @@
             leave-from-class="opacity-100"
             leave-active-class="transition-opacity duration-500"
             leave-to-class="opacity-0">
-            <span v-if="!loadingPoll" class="text-white text-xl font-axiforma-bold tracking-wider">{{poll?.title}}</span>
+            <span v-if="!loadingPoll" class="text-white text-xl font-axiforma-bold tracking-wider">Runs for {{poll?.title}}</span>
           </transition>
         </div>
       </th>

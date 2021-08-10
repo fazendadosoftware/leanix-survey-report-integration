@@ -21,7 +21,7 @@
           <router-link
             :to="{ name: breadcrumb.name, params: breadcrumb.params }"
             class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-            {{breadcrumb.name}}
+            {{breadcrumb.label}}
           </router-link>
         </div>
       </li>
@@ -47,19 +47,22 @@ export default {
     const route = useRoute()
     const { getRoutes } = useRouter()
     const routeParentIndex = getRoutes()
-      .reduce((accumulator, { name, meta: { parentRoute = null } }) => {
-        accumulator[name] = parentRoute
+      .reduce((accumulator, { name, meta: { labelFn = null, parentRoute = null } }) => {
+        accumulator[name] = { parentRoute, labelFn }
         return accumulator
       }, {})
 
     const breadcrumbs = computed(() => {
-      const { name, params } = route
-      const breadcrumbs = [{ name, params }]
-      let { [name]: parentRoute = null } = routeParentIndex || {}
-      while (parentRoute !== null) {
-        breadcrumbs.unshift({ name: parentRoute, params });
-        ({ [parentRoute]: parentRoute = null } = routeParentIndex || {})
-      }
+      const breadcrumbs = []
+      let { name, params } = route
+      let parentRoute
+      let labelFn
+      do {
+        ({ parentRoute = null, labelFn = null } = routeParentIndex[name] || {})
+        const label = typeof labelFn === 'function' ? labelFn({ name, params }) : name
+        breadcrumbs.unshift({ name, label, params })
+        name = parentRoute
+      } while (parentRoute !== null)
       return breadcrumbs
     })
     return {
